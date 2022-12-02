@@ -1,17 +1,22 @@
 // //global varibales to store DOM elements
 var startButton = document.querySelector('#start-btn');
 
-var questionContainerEl = document.querySelector('.questions-conatiner');
+var questionContainerEl = document.querySelector('.questions-container');
 var questionElement = document.getElementById('question');
 var answerElement = document.getElementById('answers');
+
+var initialsEl = document.querySelector('.highscore-initials');
 
 var h1El = document.querySelector('#quiz-title');
 var infoEl = document.querySelector('#quiz-info');
 var timeEl = document.querySelector('#time');
 var highscore = document.querySelector('#highscore');
 
-var questionIndex = 0;
+var currentIndex = 0;
 var timeLeft = 75;
+var timeInterval;
+
+initialsEl.setAttribute('style', 'display:none');
 
 // //array of questions
 var questions = [
@@ -44,18 +49,28 @@ var questions = [
 
 
 function getQuestion() {
-var ans1 = document.createElement(questions[questionIndex].question.answers[0]);
-var ans2 = document.createElement(questions[questionIndex].question.answers[0]);
-var ans3 = document.createElement(questions[questionIndex].question.answers[0]);
-var ans4 = document.createElement(questions[questionIndex].question.answers[0]);
 
-questionElement.textContent = questions[questionIndex].question;
+var ans1 = document.createElement("li");
+var ans2 = document.createElement("l1");
+var ans3 = document.createElement("li");
+var ans4 = document.createElement("li");
 
-document.body.main.section.div.ul.appendChild(ans1);
-document.body.main.section.div.ul.appendChild(ans2);
-document.body.main.section.div.ul.appendChild(ans3);
-document.body.main.section.div.ul.appendChild(ans4);
+answerElement.appendChild(ans1);
+answerElement.appendChild(ans2);
+answerElement.appendChild(ans3);
+answerElement.appendChild(ans4);
 
+if (currentIndex >= questions.length) {
+    endGame();
+} else {
+    questionElement.innerHTML = questions[currentIndex].question;
+
+    ans1.textContent = questions[currentIndex].answers[0] ;
+    ans2.textContent = questions[currentIndex].answers[1];
+    ans3.textContent = questions[currentIndex].answers[2];
+    ans4.textContent = questions[currentIndex].answers[3];
+    
+}
 
 }
 
@@ -63,8 +78,9 @@ function startQuiz() {
     h1El.classList.add('hide');
     infoEl.classList.add('hide');
     startButton.classList.add('hide');
+
   
-    var timeInterval = setInterval(function() {
+    timeInterval = setInterval(function() {
         timeLeft--;
         timeEl.textContent = timeLeft + " seconds left";
         if (timeLeft === 0){
@@ -77,34 +93,27 @@ function startQuiz() {
 
 }
 
-
 function check(event) {
-
-    // var userChoice = event.target.innerHTML;
     console.log(event.target.innerHTML)    
 
-    if (event.target.textContent === questions[questionIndex].correctAnswer){
+    if (event.target.textContent === questions[currentIndex].correctAnswer){
         //event.preventDefault();
         console.log('correct');
     } else {
         console.log('wrong');
         timeLeft = timeLeft - 15;
     }
-
-    for (var i = 0; i < questions[questionIndex].length; i++) {
-        questions[questionIndex]++;
-        console.log(questionIndex)
-    }
-
-    console.log(questionIndex);
-
-    var nextQuestionIndex = questionIndex =+ 1;
-    console.log(nextQuestionIndex);
-
-    getQuestion(nextQuestionIndex);
-}
- function endGame(){
     
+    answerElement.innerHTML = "";
+    getQuestion(currentIndex++);
+
+}
+
+ function endGame(){
+    clearInterval(timeInterval);
+    questionContainerEl.innerHTML = "";
+    initialsEl .setAttribute('style', 'display:block');
+
  }
 
  startButton.addEventListener('click', startQuiz);
