@@ -15,14 +15,15 @@
 <body>
     <main>
         <div class="header">
-            <p id="highscore">Highscores</p>
+            <p id="highscore"><a href="./js/highscores.js">Highscores</a></p>
             <p id="time">Time</p>
         </div>
         <section>
             <div class="container">
                 <h1 id="quiz-title">Coding Quiz</h1>
-                <p id="quiz-info">Answer the following questions correctly to get a higher score! Be careful: wrong
-                    answers will remove 15 seconds from your time.</p>
+                <p id="quiz-info">Answer the following questions correctly to get a higher score! BE CAREFUL: wrong
+                    answers will remove 15 seconds from your time.
+                </p>
                 <button id="start-btn" class="start-btn">Start</button>
             <div class="questions-container">
                 <h1 id="question"></h1>
@@ -31,7 +32,10 @@
             </div>
         </section>
         <section class="highscore-initials">
-            <input placeholder="initials" id="initials">
+            <label type="text" id="score" name="score" for="initials">Save Score:</label>
+            <input placeholder="initials" id="initials-input">
+            <input id="submit" type="submit" value="submit">
+            <p id="display-user"></p>
         </section>
     </main>
 </body>

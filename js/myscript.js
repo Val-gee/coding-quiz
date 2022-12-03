@@ -5,7 +5,11 @@ var questionContainerEl = document.querySelector('.questions-container');
 var questionElement = document.getElementById('question');
 var answerElement = document.getElementById('answers');
 
-var initialsEl = document.querySelector('.highscore-initials');
+var initialsContainer = document.querySelector('.highscore-initials');
+var userInitials = document.getElementById("initials-input");
+var submit = document.getElementById("submit"); 
+var displayUserInput = document.getElementById("display-user");
+var scores = [];
 
 var h1El = document.querySelector('#quiz-title');
 var infoEl = document.querySelector('#quiz-info');
@@ -16,7 +20,7 @@ var currentIndex = 0;
 var timeLeft = 75;
 var timeInterval;
 
-initialsEl.setAttribute('style', 'display:none');
+initialsContainer.setAttribute('style', 'display:none');
 
 // //array of questions
 var questions = [
@@ -45,8 +49,7 @@ var questions = [
         answers: ['for (i= 1 to 5)','for(i=0; i<=5)', 'for (i<=5; i++)', 'for (i=0; i<=5; i++)'],
         correctAnswer: 'for (i=0; i<=5; i++)',  
     }
-    ]
-
+]
 
 function getQuestion() {
 
@@ -99,6 +102,7 @@ function check(event) {
     if (event.target.textContent === questions[currentIndex].correctAnswer){
         //event.preventDefault();
         console.log('correct');
+        
     } else {
         console.log('wrong');
         timeLeft = timeLeft - 15;
@@ -109,17 +113,35 @@ function check(event) {
 
 }
 
- function endGame(){
+function endGame(){
     clearInterval(timeInterval);
     questionContainerEl.innerHTML = "";
-    initialsEl .setAttribute('style', 'display:block');
+    initialsContainer .setAttribute('style', 'display:block');
 
- }
+}
 
- startButton.addEventListener('click', startQuiz);
- answers.addEventListener('click', check)
 
- // //function to get question
+submit.addEventListener('click', function () {
+    console.log(userInitials.value);
+    console.log(displayUserInput);
+    console.log(timeLeft);
+    displayUserInput.innerHTML = "Initials: " + userInitials.value + " Score: " + timeLeft;
+
+    var user = {
+        initials: userInitials.value, 
+        score: timeLeft,
+    }
+
+    scores.push(user)
+
+    localStorage.setItem("Highscores", JSON.stringify(scores))
+});
+
+
+startButton.addEventListener('click', startQuiz);
+answers.addEventListener('click', check)
+
+//function to get question
 //     //get current question(from the object array)
 
 //     //update page to get current question
@@ -127,7 +149,7 @@ function check(event) {
 //     //clear out all question and answers
 
 //     //use for loop to go over question choices
-// // for (var i = 0; i < questionPrompt.choices.length; i++)
+// for (var i = 0; i < questionPrompt.choices.length; i++)
 
 //     //display question to the page using like append, appendChild, or text
 
@@ -151,12 +173,12 @@ function check(event) {
 //         // getNextQuestion()
 //         //}
     
-// //end quiz function
+//end quiz function
 //     //stop the timer
 //     //show score
 //     //hide the question from the user
 
-// //highscore function
+//highscore function
 //     //grab the value from the score
 //     //grab initials or name from user
 //     //check to see if user entered a value if no initial or name was input, do something.
